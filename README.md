@@ -12,14 +12,14 @@ Easily find and launch files from the desktop. Dmenu for your files.
 - Integrate easily into Sway or your favorite wm
 
 # Instructions
-**Sway Integration**
+**Sway Integration**\
 * Copy `hawk.fish` and `hawk-preview.fish` to your `~/.local/bin`
 
-* Insert the following lines to your sway config :\
+* Insert the following lines to your sway config:\
 `set $hawk exec foot -T "Hawk" ~/.local/bin/hawk.fish`\
 `for_window [title="Hawk"] floating enable`\
 `bindsym $mod+Shift+d $hawk`\
 
-**Dependencies**
+**Dependencies**\
 `fish fzf pdftotext`
 
