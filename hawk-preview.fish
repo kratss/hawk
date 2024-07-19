@@ -2,22 +2,16 @@
 
 set mime $(file --mime-type $argv)
 set name $(basename $argv)
-#set -l exif_trait $(exiftool "$argv" | grep -e "Artist" -e "Album" -e "Artist" )
-#echo $exif_trait
-#set exif_trait $(string replace -r "Album" "" $exif_trait)
-#set exif_trait $(string replace -r "Artist" "" $exif_trait)
-#set exif_trait $(string replace -r "Title" "" $exif_trait)
-#set exif_trait $(string replace -r ":" "" $exif_trait)
-#set exif_trait $(string trim $exif_trait)
-
 set exif_data $(exiftool $argv)
 
+function print_thumbnail
+    if string match --entire --quiet Picture $exif_data
+        set exif_img_size $(string match -e Picture $exif_data | tr -dc '0-9') 
+        exiftool -Picture -b $argv | head -c $exif_img_size | chafa --size 20x20
+    end
+end
 
-function substring
-    string match --regex --quiet $argv $mime
-end 
-
-function print_exif
+function get_exif
     set count
     set -g exif_trait
     for i in $argv
@@ -30,26 +24,40 @@ function print_exif
     end
 end
 
+function substring
+    string match --regex --quiet $argv $mime
+end 
+
 if substring 'application/vnd.oasis.opendocument'
     echo -e "$name\n\n"
+
 else if  substring 'pdf'
     echo -e "$name\n\n"
     pdftotext -l 2 $argv -
+
 else if substring 'video' 
     echo -e "⏯️ $name\nvideo\n"
-    print_exif $exif_trait 'Artist'
+    get_exif $exif_trait 'Artist'
+    printf " $exif_trait"
+    ffmpeg -i $argv -frames:v 1 -f image2pipe - 2> /dev/null | chafa --size 30x30
+
 else if substring 'audio' 
     echo "🎜  $name"
-    print_exif Artist Album Title
-    printf "$exif_trait"
+    get_exif Artist Album Title
+    printf " $exif_trait"
+    print_thumbnail $argv 
+
 else if substring 'image'
     echo "🖻 $name"
     if test $(command -v chafa)
-        chafa $argv -s 300x500 --polite=false
+        chafa $argv --size 25x40 --polite=false
     end
+
 else if substring 'directory'
     echo -e "$name\nFolder\n\n"
+
 else if substring 'text'
     echo -e "$name\n\n"
     cat $argv
+
 end
