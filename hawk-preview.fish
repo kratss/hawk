@@ -29,10 +29,11 @@ function substring
 end 
 
 if substring 'application/vnd.oasis.opendocument'
-    echo -e "$name\n\n"
+    echo -e "$name\n"
+    printf "$(odt2txt $argv --width=30)"
 
 else if  substring 'pdf'
-    echo -e "$name\n\n"
+    echo -e "$name\n"
     pdftotext -l 2 $argv -
 
 else if substring 'video' 
@@ -54,7 +55,7 @@ else if substring 'image'
     end
 
 else if substring 'directory'
-    echo -e "$name\nFolder\n\n"
+    echo -e "$name\nFolder\n"
 
 else if substring 'text'
     echo -e "$name\n\n"
