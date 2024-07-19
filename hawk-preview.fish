@@ -40,7 +40,7 @@ else if substring 'video'
     echo -e "⏯️ $name\nvideo\n"
     get_exif $exif_trait 'Artist'
     printf " $exif_trait"
-    ffmpeg -i $argv -frames:v 1 -f image2pipe - 2> /dev/null | chafa --size 30x30
+    ffmpeg -i $argv -frames:v 1 -f image2pipe - 2> /dev/null | chafa --size 20x20
 
 else if substring 'audio' 
     echo "🎜  $name"
