@@ -30,17 +30,23 @@ end
 
 if substring 'application/vnd.oasis.opendocument'
     echo -e "$name\n"
-    printf "$(odt2txt $argv --width=30)"
+    if test $(command -v odt2txt)
+        printf "$(odt2txt $argv --width=30)"
+    end
 
 else if  substring 'pdf'
     echo -e "$name\n"
-    pdftotext -l 2 $argv -
+    if test $(command -v pdftotext)
+        pdftotext -l 2 $argv -
+    end 
 
 else if substring 'video' 
     echo -e "⏯️ $name\nvideo\n"
     get_exif $exif_trait 'Artist'
     printf " $exif_trait"
-    ffmpeg -i $argv -frames:v 1 -f image2pipe - 2> /dev/null | chafa --size 20x20
+    if test $(command -v chafa)
+        ffmpeg -i $argv -frames:v 1 -f image2pipe - 2> /dev/null | chafa --size 20x20
+    end
 
 else if substring 'audio' 
     echo "🎜  $name"
