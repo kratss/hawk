@@ -1,10 +1,13 @@
 #!/usr/bin/env fish
+argparse  'l/launcher=' age= -- $argv
+or return
 
+echo $_flag_launcher
 
 function parse_config
     if test -d ~/.config/hawk
         set conf_dir ~/.config
-    else if test -n $XDG_CONFIG_HOME
+    else if test -n "$XDG_CONFIG_HOME"
         set conf_dir $XDG_CONFIG_HOME
     end
 
@@ -21,6 +24,12 @@ end
 set fzf_args 
 parse_config
 echo $fzf_args
-nohup xdg-open (fzf $fzf_args --preview "hawk-preview.fish {}"  ) & 
-sleep 0 
+
+if test -n "$_flag_launcher"
+    $_flag_launcher (fzf $fzf_args --preview "hawk-preview.fish {}")
+else
+    nohup xdg-open (fzf $fzf_args --preview "hawk-preview.fish {}") & 
+end
+
+
 
