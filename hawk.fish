@@ -8,8 +8,9 @@ function parse_config
     end
 
     for line in (cat $conf_dir/hawk/hawk.ini)
-        if test $line = "#"
-            continue 
+        string trim -q $line
+        if echo $line | grep -q "^#"
+            continue
         else if test $line = "[hawk]"
             set section hawk
         else if test $line = "[fzf]"
@@ -29,6 +30,8 @@ parse_config
 set -a args_hawk $argv
 argparse  'l/launcher=' age= -- $args_hawk
 or return
+
+echo $args_fzf
 
 # Launch search
 if test "$_flag_launcher" = "xdg-open"
