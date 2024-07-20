@@ -11,7 +11,6 @@ function parse_config
     end
 end
 
-swaymsg resize set 1200 500
 set fzf_args 
 parse_config
 echo $fzf_args
