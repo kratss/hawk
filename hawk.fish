@@ -1,13 +1,20 @@
 #!/usr/bin/env fish
-swaymsg resize set 1200 500
-set fzf_args  "--walker=file,dir"
-set -a fzf_args "--preview-label=Hawk"
-set -a fzf_args "--preview-label-pos=4"
-set -a fzf_args "--preview-window=right,45%,,wrap"
 
-echo $previewargs
+function parse_config
+    for line in (cat ~/.config/hawk/hawk.ini)
+        set first_char (string sub -l 1 $line)
+        if test "#" = $first_char
+            continue
+        else
+            set -a fzf_args "--$line"
+        end
+    end
+end
+
+swaymsg resize set 1200 500
+set fzf_args 
+parse_config
+echo $fzf_args
 nohup xdg-open (fzf $fzf_args --preview "hawk-preview.fish {}"  ) & 
 sleep 0 
-
-
 
