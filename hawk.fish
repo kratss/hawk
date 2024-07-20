@@ -1,7 +1,14 @@
 #!/usr/bin/env fish
 
+
 function parse_config
-    for line in (cat ~/.config/hawk/hawk.ini)
+    if test -d ~/.config/hawk
+        set conf_dir ~/.config
+    else if test -n $XDG_CONFIG_HOME
+        set conf_dir $XDG_CONFIG_HOME
+    end
+
+    for line in (cat $conf_dir/hawk/hawk.ini)
         set first_char (string sub -l 1 $line)
         if test "#" = $first_char
             continue
