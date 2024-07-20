@@ -32,12 +32,12 @@ or return
 
 # Launch search
 if test "$_flag_launcher" = "xdg-open"
-    nohup xdg-open (fzf $fzf_args --preview "hawk-preview.fish {}") &
+    nohup xdg-open (fzf $args_fzf --preview "hawk-preview.fish {}") &
     sleep 0
 else if test -n "$_flag_launcher"
-    $_flag_launcher (fzf $fzf_args --preview "hawk-preview.fish {}")
+    $_flag_launcher (fzf $args_fzf --preview "hawk-preview.fish {}")
 else
-    nohup xdg-open (fzf $fzf_args --preview "hawk-preview.fish {}") &
+    nohup xdg-open (fzf $args_fzf --preview "hawk-preview.fish {}") &
     sleep 0 
 end
 
