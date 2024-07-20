@@ -13,13 +13,13 @@ Easily find and launch files from the desktop. Dmenu for your files.
 - Customize with a simple ini file
 
 # Instructions
-**Sway Integration**\
+**Sway Integration**
 * Copy `hawk.fish` and `hawk-preview.fish` to your `~/.local/bin`
 * Insert the following line to your sway config:\
-    `bindsym $mod+Shift+d $hawk`\
-* Add `include hawk-sway` to your sway config and place `hawk-sway` in your .config/sway/ foler
+    `bindsym $mod+Shift+d $hawk`
+* Add `include hawk-sway` to your sway config and place `hawk-sway` in .config/sway/
 
 **Dependencies**\
 Required: `fish` `fzf`\
-Optional: `chafa` `ffmpeg` `odt2txt` `pdftotext`\
+Optional: `chafa` `ffmpeg` `odt2txt` `pdftotext`
 
