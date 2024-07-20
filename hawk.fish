@@ -1,8 +1,4 @@
 #!/usr/bin/env fish
-argparse  'l/launcher=' age= -- $argv
-or return
-
-echo $_flag_launcher
 
 function parse_config
     if test -d ~/.config/hawk
@@ -12,23 +8,37 @@ function parse_config
     end
 
     for line in (cat $conf_dir/hawk/hawk.ini)
-        set first_char (string sub -l 1 $line)
-        if test "#" = $first_char
-            continue
-        else
-            set -a fzf_args "--$line"
+        if test $line = "#"
+            continue 
+        else if test $line = "[hawk]"
+            set section hawk
+        else if test $line = "[fzf]"
+            set section fzf
+        else if test $section = hawk
+            set -a args_hawk "--$line"
+        else if test $section = fzf
+            set -a args_fzf "--$line"
         end
     end
 end
 
-set fzf_args 
+#Parse hawk.ini and in-line args
+set args_hawk 
+set args_fzf 
 parse_config
-echo $fzf_args
+set -a args_hawk $argv
+argparse  'l/launcher=' age= -- $args_hawk
+or return
 
-if test -n "$_flag_launcher"
+# Launch search
+if test "$_flag_launcher" = "xdg-open"
+    nohup xdg-open (fzf $fzf_args --preview "hawk-preview.fish {}") &
+    sleep 0
+else if test -n "$_flag_launcher"
     $_flag_launcher (fzf $fzf_args --preview "hawk-preview.fish {}")
 else
-    nohup xdg-open (fzf $fzf_args --preview "hawk-preview.fish {}") & 
+    nohup xdg-open (fzf $fzf_args --preview "hawk-preview.fish {}") &
+    sleep 0 
 end
 
 
