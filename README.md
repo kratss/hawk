@@ -4,22 +4,25 @@ Easily find and launch files from the desktop. Dmenu for your files.
 ![Screenshot](docs/screenshot1.png) 
 
 # Features
-- Finds files fast with `fzf`
-- Fuzzy matching makes search easy
+- Find files fast with `fzf`
+- Search easily with fuzzy matching
+- Preview files including thumbnails
+- Lightweight
+
+# Integration and Configuration
 - Launches files with `xdg-open` `rifle` or your own script
-- Opens in a terminal window, so Hawk is lightweight and always matches your theme
-- Previews files
 - Integrates easily into Sway or your favorite wm
-- Customize with a simple ini file
+- Supports XDG base directory specification
+- Configures with a simple ini file
 
-# Instructions
+# Installation
+- Place hawk.fish and hawk-preview.fish in your  `~/.local/bin/`
+- Place hawk.ini in `~/.config/hawk/` or `XDG_CONFIG_HOME/hawk/`
 **Sway Integration**
-* Copy `hawk.fish` and `hawk-preview.fish` to your `~/.local/bin`
-* Insert the following line to your sway config:\
+- Insert the following line to your sway config:\
     `bindsym $mod+Shift+d $hawk`
-* Add `include hawk-sway` to your sway config and place `hawk-sway` in .config/sway/
-
+- Add `include hawk-sway` to your sway config and place `hawk-sway` in ~/.config/sway/
 **Dependencies**\
-Required: `fish` `fzf`\
-Optional: `chafa` `ffmpeg` `odt2txt` `pdftotext`
+- Required: `fish` `fzf`\
+- Optional: `chafa` `ffmpeg` `odt2txt` `pdftotext`
 
