@@ -1,0 +1,4 @@
+set $file_finder exec footclient -T "Hawk" ~/.local/bin/hawk.fish 
+for_window [title="Hawk"] floating enable
+for_window [title="Hawk"] border none
+for_window [title="Hawk"] resize set 1200 500
