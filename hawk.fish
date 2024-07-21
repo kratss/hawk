@@ -13,36 +13,48 @@ function parse_config
             continue
         else if test $line = "[hawk]"
             set section hawk
+        else if test $line = "[preview]"
+            set section preview
         else if test $line = "[fzf]"
             set section fzf
         else if test $section = hawk
             set -a args_hawk "--$line"
+        else if test $section = preview
+            set -a args_preview "--$line"
         else if test $section = fzf
             set -a args_fzf "--$line"
         end
     end
 end
 
+
 #Parse hawk.ini and in-line args
 set args_hawk 
+set args_preview
 set args_fzf 
+
 parse_config
 set -a args_hawk $argv
-argparse  'l/launcher=' age= -- $args_hawk
+argparse  'l/launcher=' 't/thumb_size=' -- $args_hawk
 or return
 
-echo $args_fzf
+if test -n "$_flag_thumb_size"
+    set -a args_preview "--$_flag_thumb_size"
+    echo "thumb_size: '--$_flag_thumb_size'"
+end
+
+echo "launcher: $_flag_launcher"
+echo "args_preview: $args_preview"
+
 
 # Launch search
 if test "$_flag_launcher" = "xdg-open"
-    nohup xdg-open (fzf $args_fzf --preview "hawk-preview.fish {}") &
+    nohup xdg-open (fzf $args_fzf --preview "hawk-preview.fish $args_preview {}") &
     sleep 0
 else if test -n "$_flag_launcher"
-    $_flag_launcher (fzf $args_fzf --preview "hawk-preview.fish {}")
+    $_flag_launcher (fzf $args_fzf --preview "hawk-preview.fish $args_preview {}")
 else
-    nohup xdg-open (fzf $args_fzf --preview "hawk-preview.fish {}") &
+    nohup xdg-open (fzf $args_fzf --preview "hawk-preview.fish  $args_preview {}") &
     sleep 0 
 end
-
-
 

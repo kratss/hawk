@@ -1,13 +1,19 @@
 #!/usr/bin/env fish
+argparse 't/thumb_size=' -- $argv
+set -g _flag_thumb_size $_flag_thumb_size
 
 set mime $(file --mime-type $argv)
 set name $(basename $argv)
 set exif_data $(exiftool $argv)
 
-function print_thumbnail
+function print_img 
+   chafa $argv --size $_flag_thumb_size
+end
+
+function get_thumbnail #print exif thumbnail as binary stream
     if string match --entire --quiet Picture $exif_data
         set exif_img_size $(string match -e Picture $exif_data | tr -dc '0-9') 
-        exiftool -Picture -b $argv | head -c $exif_img_size | chafa --size 20x20
+        exiftool -Picture -b $argv[1] | head -c $exif_img_size
     end
 end
 
@@ -45,19 +51,20 @@ else if substring 'video'
     get_exif $exif_trait 'Artist'
     printf " $exif_trait"
     if test $(command -v chafa)
-        ffmpeg -i $argv -frames:v 1 -f image2pipe - 2> /dev/null | chafa --size 20x20
+        ffmpeg -i $argv -frames:v 1 -f image2pipe - 2> /dev/null | chafa --size $_flag_thumb_size
     end
 
 else if substring 'audio' 
     echo "🎜  $name"
     get_exif Artist Album Title
     printf " $exif_trait"
-    print_thumbnail $argv 
+    get_thumbnail $argv | print_img 
 
 else if substring 'image'
     echo "🖻 $name"
     if test $(command -v chafa)
-        chafa $argv --size 25x40 --polite=false
+        #chafa $argv --size $_flag_thumb_size
+        print_img $argv
     end
 
 else if substring 'directory'
