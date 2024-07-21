@@ -7,7 +7,9 @@ set name $(basename $argv)
 set exif_data $(exiftool $argv)
 
 function print_img 
-   chafa $argv --size $_flag_thumb_size
+    if test (command -v chafa)
+       chafa $argv --size $_flag_thumb_size
+   end
 end
 
 function get_thumbnail #print exif thumbnail as binary stream
@@ -48,10 +50,10 @@ else if  substring 'pdf'
 
 else if substring 'video' 
     echo -e "⏯️ $name\nvideo\n"
-    get_exif $exif_trait 'Artist'
+    get_exif $exif_trait Artist
     printf " $exif_trait"
-    if test $(command -v chafa)
-        ffmpeg -i $argv -frames:v 1 -f image2pipe - 2> /dev/null | chafa --size $_flag_thumb_size
+    if test $(command -v ffmpeg)
+        ffmpeg -i $argv -frames:v 1 -f image2pipe - 2> /dev/null | print_img
     end
 
 else if substring 'audio' 
@@ -62,10 +64,7 @@ else if substring 'audio'
 
 else if substring 'image'
     echo "🖻 $name"
-    if test $(command -v chafa)
-        #chafa $argv --size $_flag_thumb_size
-        print_img $argv
-    end
+    print_img $argv
 
 else if substring 'directory'
     echo -e "$name\nFolder\n"
