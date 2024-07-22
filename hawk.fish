@@ -9,7 +9,7 @@ function parse_config
 
     for line in (cat $conf_dir/hawk/hawk.ini)
         string trim -q $line
-        if echo $line | grep -q "^#"
+        if echo $line | grep -q "^#"; or test -z $line
             continue
         else if test $line = "[hawk]"
             set section hawk
@@ -32,11 +32,9 @@ end
 set args_hawk 
 set args_preview
 set args_fzf 
-
 parse_config
 set -a args_hawk $argv
 argparse  'l/launcher=' 't/thumb_size=' -- $args_hawk
-or return
 
 if test -n "$_flag_thumb_size"
     set -a args_preview "--$_flag_thumb_size"
@@ -45,12 +43,12 @@ end
 
 # Launch search
 if test "$_flag_launcher" = "xdg-open"
-    nohup xdg-open (fzf $args_fzf --preview "hawk-preview.fish $args_preview {}") &
+    nohup xdg-open (fzf $args_fzf --preview "hawk-preview.fish $args_preview {}") 2> /dev/null &
     sleep 0
 else if test -n "$_flag_launcher"
     $_flag_launcher (fzf $args_fzf --preview "hawk-preview.fish $args_preview {}")
 else
-    nohup xdg-open (fzf $args_fzf --preview "hawk-preview.fish  $args_preview {}") &
+    nohup xdg-open (fzf $args_fzf --preview "hawk-preview.fish  $args_preview {}") 2> /dev/null &
     sleep 0 
 end
 
