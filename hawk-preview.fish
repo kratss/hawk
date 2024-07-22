@@ -1,10 +1,8 @@
 #!/usr/bin/env fish
 argparse 't/thumb_size=' -- $argv
 set -g _flag_thumb_size $_flag_thumb_size
-
 set mime $(file --mime-type $argv)
 set name $(basename $argv)
-set exif_data $(exiftool $argv)
 
 function print_img 
     if test (command -v chafa)
@@ -50,7 +48,8 @@ else if  substring 'pdf'
 
 else if substring 'video' 
     echo -e "⏯️ $name\nvideo\n"
-    get_exif $exif_trait Artist
+    set exif_data $(exiftool $argv)
+    get_exif $exif_trait Artist Title
     printf " $exif_trait"
     if test $(command -v ffmpeg)
         ffmpeg -i $argv -frames:v 1 -f image2pipe - 2> /dev/null | print_img
@@ -58,6 +57,7 @@ else if substring 'video'
 
 else if substring 'audio' 
     echo "🎜  $name"
+    set exif_data $(exiftool $argv)
     get_exif Artist Album Title
     printf " $exif_trait"
     get_thumbnail $argv | print_img 
@@ -70,7 +70,7 @@ else if substring 'directory'
     echo -e "$name\nFolder\n"
 
 else if substring 'text'
-    echo -e "$name\n\n"
+    echo -e "$name\n"
     cat $argv
 
 end
