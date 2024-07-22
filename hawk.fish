@@ -40,11 +40,7 @@ or return
 
 if test -n "$_flag_thumb_size"
     set -a args_preview "--$_flag_thumb_size"
-    echo "thumb_size: '--$_flag_thumb_size'"
 end
-
-echo "launcher: $_flag_launcher"
-echo "args_preview: $args_preview"
 
 
 # Launch search
