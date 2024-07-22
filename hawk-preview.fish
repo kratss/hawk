@@ -8,7 +8,7 @@ set exif_data $(exiftool $argv)
 
 function print_img 
     if test (command -v chafa)
-       chafa $argv --size $_flag_thumb_size
+        chafa $argv --size $_flag_thumb_size 2> /dev/null 
    end
 end
 
