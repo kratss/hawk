@@ -1,6 +1,7 @@
 #!/usr/bin/env fish
 argparse 't/thumb_size=' -- $argv
 set -g _flag_thumb_size $_flag_thumb_size
+
 set mime $(file --mime-type $argv)
 set name $(basename $argv)
 
@@ -35,19 +36,19 @@ function substring
 end 
 
 if substring 'application/vnd.oasis.opendocument'
-    echo -e "$name\n"
+    echo -e "🖹 $name\n"
     if test $(command -v odt2txt)
         printf "$(odt2txt $argv --width=30)"
     end
 
 else if  substring 'pdf'
-    echo -e "$name\n"
+    echo -e "🖹 $name\n"
     if test $(command -v pdftotext)
         pdftotext -l 2 $argv -
     end 
 
 else if substring 'video' 
-    echo -e "⏯️ $name\nvideo\n"
+    echo -e "⏯️ $name\nvideo"
     set exif_data $(exiftool $argv)
     get_exif $exif_trait Artist Title
     printf " $exif_trait"
