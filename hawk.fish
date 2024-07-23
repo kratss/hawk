@@ -35,20 +35,25 @@ set args_fzf
 parse_config
 set -a args_hawk $argv
 argparse  'l/launcher=' 't/thumb_size=' -- $args_hawk
-
-if test -n "$_flag_thumb_size"
-    set -a args_preview "--$_flag_thumb_size"
+if test -n "$_flag_thumb_size" 
+    set -a args_preview "--thumb_size=$_flag_thumb_size"
 end
 
 
 # Launch search
 if test "$_flag_launcher" = "xdg-open"
-    nohup xdg-open (fzf $args_fzf --preview "hawk-preview.fish $args_preview {}") 2> /dev/null &
+    nohup xdg-open \
+        (fzf $args_fzf --preview "hawk-preview.fish $args_preview {}") \
+        2> /dev/null  &
     sleep 0
+
 else if test -n "$_flag_launcher"
     $_flag_launcher (fzf $args_fzf --preview "hawk-preview.fish $args_preview {}")
+
 else
-    nohup xdg-open (fzf $args_fzf --preview "hawk-preview.fish  $args_preview {}") 2> /dev/null &
+    nohup xdg-open \
+        (fzf $args_fzf --preview "hawk-preview.fish  $args_preview {}") \
+        2> /dev/null &
     sleep 0 
 end
 
