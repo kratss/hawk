@@ -1,7 +1,7 @@
 # Hawk
 Easily find and launch files from the desktop. Dmenu for your files.
 
-![Screenshot](docs/screenshot1.png) 
+![Screenshot](docs/screenshot1.webp) 
 
 # Features
 - Find files fast with fzf
