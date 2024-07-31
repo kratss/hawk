@@ -1,5 +1,5 @@
 #!/usr/bin/env fish
-
+#TODO: Use argparse --stop-noopt to support in-line arguments for subcommands
 function parse_config
     if test -d ~/.config/hawk
         set conf_dir ~/.config
