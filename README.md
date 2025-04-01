@@ -3,6 +3,7 @@ Easily find and launch files from the desktop. Dmenu for your files.
 
 ![Screenshot](docs/screenshot1.webp) 
 
+Project site: [rosecoloredxeyes.com/software/hawk.html](rosecoloredxeyes.com/software/hawk.html)
 # Features
 - Find files fast with fzf
 - Search easily with fuzzy matching
